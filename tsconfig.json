@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6", // Especifica a versão alvo do ECMAScript
+    "module": "commonjs", // Especifica a geração de código do módulo
+    "strict": true, // Habilita todas as opções de verificação estrita
+    "esModuleInterop": true, // Habilita a compatibilidade com módulos CommonJS
+    "skipLibCheck": true, // Pula a verificação de arquivos de declaração
+    "forceConsistentCasingInFileNames": true, // Garante a consistência de maiúsculas e minúsculas nos nomes dos arquivos
+    "types": ["jest"] // Adicione esta linha
+  },
+  "include": ["src/**/*"], // Inclui todos os arquivos TypeScript no diretório 'src'
+  "exclude": ["node_modules", "dist"] // Exclui os diretórios 'node_modules' e 'dist'
+}
