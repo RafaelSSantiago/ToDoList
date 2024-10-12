@@ -1,5 +1,5 @@
-import { Tarefa } from "../entities/tarefa";
+import { Todo } from "../entities/todo";
 
-export interface AddTarefa {
-  add(tarefa: Omit<Tarefa, "id">): Promise<Tarefa>;
+export interface AddTodo {
+  add(Todo: Partial<Todo>): Promise<Todo>;
 }

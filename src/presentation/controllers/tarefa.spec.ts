@@ -1,94 +1,76 @@
-import { Tarefa } from "../../domain/entities/tarefa";
-import { AddTarefa } from "../../domain/models/add-tarefa";
+import { Todo } from "../../domain/entities/todo";
+import { AddTodo } from "../../domain/models/add-tarefa";
 import { TarefaController } from "./tarefa";
 
-const makeAddTarefaStub = (): AddTarefa => {
-  class addTarefaStub implements AddTarefa {
-    async add(tarefa: Omit<Tarefa, "userId">): Promise<Omit<Tarefa, "userId">> {
+const makeAddTarefaStub = (): AddTodo => {
+  class AddTodoStub implements AddTodo {
+    async add(tarefa: Omit<Todo, "id">): Promise<Todo> {
       return {
         id: "any_id",
-        data: "any_data",
-        descricao: "any_descricao",
-        nome: "any_nome",
-        status: "any_status",
+        title: "any_id",
+        completed: false,
+        createdAt: new Date(),
+        updateAt: new Date(),
       };
     }
   }
 
-  return new addTarefaStub();
+  return new AddTodoStub();
 };
 
 interface SutTypes {
   sut: TarefaController;
-  addTarefa: AddTarefa;
+  addTodo: AddTodo;
 }
 
 const makeSut = (): SutTypes => {
-  const addTarefa = makeAddTarefaStub();
-  const sut = new TarefaController(addTarefa);
+  const addTodo = makeAddTarefaStub();
+  const sut = new TarefaController(addTodo);
 
   return {
     sut,
-    addTarefa,
+    addTodo,
   };
 };
 
 describe("TarefaController", () => {
-  test("Deve retornar error se não tiver nome da tarefa", async () => {
+  test("Deve retornar error se não tiver title da tarefa", async () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        descricao: "any_descricao",
-        data: "any_data",
+        createdAt: new Date(),
       },
     };
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(new Error("Missing param nome"));
-  });
-
-  test("Deve retornar error se não tiver a descrição da tarefa", async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        nome: "any_nome",
-        data: "any_data",
-        status: "any_status",
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(new Error("Missing param descricao"));
+    expect(httpResponse).toEqual(new Error("Missing param title"));
   });
 
   test("Deve retornar error se não tiver a data da tarefa", async () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        nome: "any_nome",
-        descricao: "any_descricao",
-        status: "any_status",
+        title: "any_title",
       },
     };
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(new Error("Missing param data"));
+    expect(httpResponse).toEqual(new Error("Missing param createdAt"));
   });
 
   test("Deve Adicionar uma tarefa", async () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        nome: "any_nome",
-        descricao: "any_descricao",
-        status: "any_status",
-        data: "any_data",
+        title: "any_title",
+        createdAt: new Date(),
       },
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual({
-      nome: "any_nome",
-      descricao: "any_descricao",
-      data: "any_data",
       id: "any_id",
-      status: "any_status",
+      title: "any_id",
+      completed: false,
+      createdAt: new Date(),
+      updateAt: new Date(),
     });
   });
 });
