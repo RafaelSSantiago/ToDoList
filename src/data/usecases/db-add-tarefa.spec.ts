@@ -1,3 +1,4 @@
+import { IdGeneratorAdapter } from "../../main/id-generator-adapter";
 import { DbAddTarefa } from "./db-add-tarefa";
 
 interface SutTypes {
@@ -5,7 +6,8 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new DbAddTarefa();
+  const idGeneratorAdapter = new IdGeneratorAdapter()
+  const sut = new DbAddTarefa(idGeneratorAdapter);
 
   return {
     sut,
