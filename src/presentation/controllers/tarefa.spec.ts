@@ -42,7 +42,7 @@ describe("TarefaController", () => {
       },
     };
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(new Error("Missing param title"));
+    expect(httpResponse.body).toEqual(new Error("Missing param title"));
   });
 
   test("Deve retornar error se não tiver a data da tarefa", async () => {
@@ -53,7 +53,7 @@ describe("TarefaController", () => {
       },
     };
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(new Error("Missing param createdAt"));
+    expect(httpResponse.body).toEqual(new Error("Missing param createdAt"));
   });
 
   test("Deve Adicionar uma tarefa", async () => {
@@ -65,7 +65,7 @@ describe("TarefaController", () => {
       },
     };
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual({
+    expect(httpResponse.body).toEqual({
       id: "any_id",
       title: "any_id",
       completed: false,
