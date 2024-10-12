@@ -6,12 +6,12 @@
   "scripts": {
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js"
-
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@shelf/jest-mongodb": "^4.3.2",
     "@types/jest": "^29.5.13",
     "@types/uuid": "^10.0.0",
     "ts-jest": "^29.2.5",
