@@ -1,7 +1,7 @@
 import { Todo } from "../../domain/entities/todo";
 import { AddTodo } from "../../domain/models/add-tarefa";
 import { TodoMongoRepository } from "../../infra/todo-mongo-repository";
-import { IdGeneratorAdapter } from "../../main/id-generator-adapter";
+import { IdGeneratorAdapter } from "../../main/adapters/id-generator-adapter";
 import { AddTodoModel } from "../db/add-todo-repository";
 
 export class DbAddTarefa implements AddTodo {

@@ -1,4 +1,4 @@
-import { IdGenerator } from "../domain/models/id-generator";
+import { IdGenerator } from "../../domain/models/id-generator";
 import { v4 as uuidv4 } from "uuid";
 
 export class IdGeneratorAdapter implements IdGenerator {

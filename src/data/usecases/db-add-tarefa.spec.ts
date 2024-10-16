@@ -1,5 +1,5 @@
 import { Todo } from "../../domain/entities/todo";
-import { IdGeneratorAdapter } from "../../main/id-generator-adapter";
+import { IdGeneratorAdapter } from "../../main/adapters/id-generator-adapter";
 import { AddTodoModel, AddTodoRepository } from "../db/add-todo-repository";
 import { DbAddTarefa } from "./db-add-tarefa";
 
