@@ -7,9 +7,9 @@ export class TarefaController implements Controller {
   constructor(private readonly addTarefa: AddTodo) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const camposObrigatorios = ["title", "createdAt"];
-
+    const camposObrigatorios = ["title"];
     for (const campo of camposObrigatorios) {
+      console.log(httpRequest.body);
       if (!httpRequest.body[campo]) {
         return new Promise((resolve) =>
           resolve({
@@ -26,7 +26,7 @@ export class TarefaController implements Controller {
       title,
       createdAt: new Date(),
     });
-
+      console.log("cheguei aqui", tarefa)
     return {
       statusCode: 200,
       body: tarefa,

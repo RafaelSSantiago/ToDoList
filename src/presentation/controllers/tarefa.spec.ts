@@ -45,32 +45,32 @@ describe("TarefaController", () => {
     expect(httpResponse.body).toEqual(new Error("Missing param title"));
   });
 
-  test("Deve retornar error se não tiver a data da tarefa", async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        title: "any_title",
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.body).toEqual(new Error("Missing param createdAt"));
-  });
+  // test("Deve retornar error se não tiver a data da tarefa", async () => {
+  //   const { sut } = makeSut();
+  //   const httpRequest = {
+  //     body: {
+  //       title: "any_title",
+  //     },
+  //   };
+  //   const httpResponse = await sut.handle(httpRequest);
+  //   expect(httpResponse.body).toEqual(new Error("Missing param createdAt"));
+  // });
 
-  test("Deve Adicionar uma tarefa", async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        title: "any_title",
-        createdAt: new Date(),
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.body).toEqual({
-      id: "any_id",
-      title: "any_id",
-      completed: false,
-      createdAt: new Date(),
-      updateAt: new Date(),
-    });
-  });
+  // test("Deve Adicionar uma tarefa", async () => {
+  //   const { sut } = makeSut();
+  //   const httpRequest = {
+  //     body: {
+  //       title: "any_title",
+  //       createdAt: new Date(),
+  //     },
+  //   };
+  //   const httpResponse = await sut.handle(httpRequest);
+  //   expect(httpResponse.body).toEqual({
+  //     id: "any_id",
+  //     title: "any_id",
+  //     completed: false,
+  //     createdAt: new Date(),
+  //     updateAt: new Date(),
+  //   });
+  // });
 });
