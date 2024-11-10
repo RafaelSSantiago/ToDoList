@@ -1,5 +1,21 @@
 import { Todo } from "../entities/todo";
+import crypto from "crypto";
 
-export interface AddTodo {
-  add(Todo: Partial<Todo>): Promise<Todo>;
+interface AddTodoProps {
+  id: string;
+  title: string;
+  description: string;
+  createdAt: Date;
+  updateAt: Date;
+  completed: boolean;
+}
+
+export class AddTodo {
+  public static create(props: AddTodoProps): Todo {
+    props.id = crypto.randomUUID();
+    props.updateAt = new Date();
+    props.completed = false;
+
+    return new Todo(props.id, props.title, props.description, props.createdAt, props.updateAt, props.completed);
+  }
 }
