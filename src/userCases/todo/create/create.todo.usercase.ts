@@ -8,6 +8,8 @@ export class CreateTodoUseCase {
   async execute(input: InputCreateTodoDTOs): Promise<OutputCreateTodoDTOs> {
     const todo = TodoFactory.create(input);
 
+    await this.todoRepository.create(todo);
+
     return {
       id: todo._id,
       title: todo._title,
