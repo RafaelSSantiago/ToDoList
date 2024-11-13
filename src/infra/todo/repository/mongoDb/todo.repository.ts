@@ -1,24 +1,23 @@
 import { ObjectId } from "mongodb";
 import { Todo } from "../../../../domain/todo/entities/todo";
 import { TodoRepositoryInterface } from "../../../../domain/todo/repository/todo-repository.interface";
-import { MongoHelper } from "../../../helpers/mongoDb.helper";
+import { DatabaseClient } from "../../../helpers/database-client.interface";
 export class TodoRepository implements TodoRepositoryInterface {
-  private mongoHelper;
+  constructor(private readonly databaseClient: DatabaseClient) {}
 
-  constructor() {
-    this.mongoHelper = new MongoHelper();
-  }
   async create(entity: Todo): Promise<void> {
-    const todo = await this.mongoHelper.getCollection("todo");
-    const { _id, ...datas } = entity;
+    const todo = await this.databaseClient.getCollection("todo");
+
+    const { _id, ...data } = entity;
+    console.log(data)
     await todo.insertOne({
       _id: new ObjectId(_id),
-      ...datas,
+      ...data,
     });
   }
 
   async find(entity: Todo): Promise<Todo> {
-    const todo = await this.mongoHelper.getCollection("todo");
+    const todo = await this.databaseClient.getCollection("todo");
     const data = await todo.findOne({ _id: new ObjectId(entity._id) });
 
     return new Todo(
@@ -32,8 +31,10 @@ export class TodoRepository implements TodoRepositoryInterface {
   }
 
   async findAll(entity: Todo): Promise<Todo[]> {
-    const todo = await this.mongoHelper.getCollection("todo");
-    const todoList = await todo.find({ id: new ObjectId(entity._id) }).toArray();
+    const id = String(entity._id);
+    console.log("id", id);
+    const todo = await this.databaseClient.getCollection("todo");
+    const todoList = await todo.find({ id: new ObjectId(id) }).toArray();
 
     const data: Todo[] = todoList.map((todo) => {
       return new Todo(
@@ -50,7 +51,7 @@ export class TodoRepository implements TodoRepositoryInterface {
   }
 
   async update(entity: Todo): Promise<void> {
-    const todo = await this.mongoHelper.getCollection("todo");
+    const todo = await this.databaseClient.getCollection("todo");
     const { _id, ...data } = entity;
 
     await todo.updateOne({ _id: new ObjectId(_id) }, { $set: data });

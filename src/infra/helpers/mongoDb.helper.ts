@@ -1,11 +1,12 @@
 import { Collection, MongoClient } from "mongodb";
-export class MongoHelper {
-  private client: MongoClient | null = null;
-  private uri: string | null = null;
+import { DatabaseClient } from "./database-client.interface";
+import env from "../api/env";
 
-  async connect(uri: string): Promise<void> {
-    this.uri = uri;
-    this.client = await MongoClient.connect(uri);
+export class MongoHelper implements DatabaseClient {
+  private client: MongoClient | null = null;
+
+  async connect(): Promise<void> {
+    this.client = await MongoClient.connect(env.mongoUrl);
   }
 
   async disconnect(): Promise<void> {
@@ -29,7 +30,7 @@ export class MongoHelper {
 
   async getCollection(name: string): Promise<Collection> {
     if (!(await this.isConnected())) {
-      await this.connect(this.uri as string);
+      await this.connect();
     }
     return this.client!.db().collection(name);
   }
