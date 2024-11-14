@@ -7,11 +7,10 @@ export class TodoRepository implements TodoRepositoryInterface {
 
   async create(entity: Todo): Promise<void> {
     const todo = await this.databaseClient.getCollection("todo");
-
     const { _id, ...data } = entity;
-    console.log(data)
+
     await todo.insertOne({
-      _id: new ObjectId(_id),
+      _id: new ObjectId(),
       ...data,
     });
   }
@@ -30,11 +29,10 @@ export class TodoRepository implements TodoRepositoryInterface {
     );
   }
 
-  async findAll(entity: Todo): Promise<Todo[]> {
-    const id = String(entity._id);
-    console.log("id", id);
+  async findAll(id: string): Promise<Todo[]> {
     const todo = await this.databaseClient.getCollection("todo");
-    const todoList = await todo.find({ id: new ObjectId(id) }).toArray();
+
+    const todoList = await todo.find({ id: id }).toArray();
 
     const data: Todo[] = todoList.map((todo) => {
       return new Todo(
