@@ -1,6 +1,5 @@
 import { app } from "./express";
 import { MongoHelper } from "../helpers/mongoDb.helper";
-import env from "./env";
 import { router } from "./routes";
 
 const port = process.env.PORT || 3000;

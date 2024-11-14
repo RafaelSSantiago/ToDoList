@@ -15,9 +15,9 @@ export class TodoRepository implements TodoRepositoryInterface {
     });
   }
 
-  async find(entity: Todo): Promise<Todo> {
+  async find(id: string): Promise<Todo> {
     const todo = await this.databaseClient.getCollection("todo");
-    const data = await todo.findOne({ _id: new ObjectId(entity._id) });
+    const data = await todo.findOne({ _id: new ObjectId(id as unknown as number) });
 
     return new Todo(
       String(data?._id),
