@@ -5,12 +5,13 @@ import { UserRepositoryInterface } from "../../../../domain/user/repository/user
 export class UserRepository implements UserRepositoryInterface {
   constructor(private readonly databaseClient: DatabaseClient) {}
 
-  async create<K extends keyof User>(entity: Omit<User, K>): Promise<void> {
+  async create(entity: User): Promise<void> {
     const todo = await this.databaseClient.getCollection("user");
+    const body = entity.toObjectWithoutId();
 
     await todo.insertOne({
-      _id: new ObjectId(),
-      ...entity,
+      _id: new ObjectId(entity._id),
+      ...body,
     });
   }
 
