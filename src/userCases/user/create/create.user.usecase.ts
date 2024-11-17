@@ -6,7 +6,7 @@ export class CreateUserUseCase {
   constructor(private readonly userRepository: UserRepositoryInterface) {}
 
   async execute(input: InputCreateUserDTO): Promise<outPutCreateUserDTO> {
-    const user = CreateUserFactory.Create(input);
+    const user = CreateUserFactory.create(input);
 
     await this.userRepository.create(user);
 
