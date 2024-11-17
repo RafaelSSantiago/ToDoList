@@ -12,4 +12,29 @@ export class User {
   get _name() {
     return this.name;
   }
+
+  get _id() {
+    return this.id;
+  }
+
+  get _email() {
+    return this.email;
+  }
+
+  get _todos() {
+    return this.todo;
+  }
+
+  get _password() {
+    return this.password;
+  }
+
+  toObjectWithoutId() {
+    return {
+      name: this.name,
+      email: this.email,
+      password: this.password,
+      todo: this.todo,
+    };
+  }
 }
