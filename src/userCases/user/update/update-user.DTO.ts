@@ -1,7 +1,12 @@
 import { User } from "../../../domain/user/entities/user";
 import { UserValidator } from "../../../shared/validators/user-validator";
 
-export interface InputUpdateUserDTO extends User {}
+export interface InputUpdateUserDTO {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
 
 export class InputUpdateUserDtoValidator {
   static validate(input: InputUpdateUserDTO) {
