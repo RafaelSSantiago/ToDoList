@@ -25,6 +25,10 @@ export class User {
     return this.todo;
   }
 
+  get _password() {
+    return this.password;
+  }
+
   toObjectWithoutId() {
     return {
       name: this.name,

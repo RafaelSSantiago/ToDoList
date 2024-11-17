@@ -3,7 +3,7 @@ export interface CreateRepositoryInterface<T> {
 }
 
 export interface UpdateRepositoryInterface<T> {
-  update(entity: T): Promise<void>;
+  update(entity: Partial<T>): Promise<void>;
 }
 
 export interface FindRepositoryInterface<T> {

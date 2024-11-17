@@ -1,8 +1,10 @@
 import { Router, Request, Response } from "express";
 import { MongoHelper } from "../../../helpers/mongoDb.helper";
-import { CreateUserUseCase } from "../../../../userCases/user/create/create.user.usecase";
+import { CreateUserUseCase } from "../../../../userCases/user/create/create-user.usecase";
 import { UserRepository } from "../../../user/repository/mongoDb/user.repository";
 import { InputCreateUserDTO } from "../../../../userCases/user/create/create-user.DTO";
+import { InputFindUserDto } from "../../../../userCases/user/find/find-todo.DTO";
+import { FindUserUseCase } from "../../../../userCases/user/find/find-user.usecase";
 
 export const UserRouter = Router();
 
@@ -23,3 +25,20 @@ UserRouter.post("/", async (req: Request, res: Response) => {
     res.status(500).send(err);
   }
 });
+
+
+UserRouter.get("/", async (req: Request, res: Response) => {
+  const databaseClient = new MongoHelper();
+  const useCase = new FindUserUseCase(new UserRepository(databaseClient));
+
+  const input: InputFindUserDto = {
+    id: req.body.id
+  }
+
+  try {
+    const outPut = await useCase.execute(input);
+    res.send(outPut);
+  }catch(err){
+    res.status(500).send(err);
+  }
+})

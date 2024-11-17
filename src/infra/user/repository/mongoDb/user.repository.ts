@@ -22,7 +22,7 @@ export class UserRepository implements UserRepositoryInterface {
     return new User(data?.id, data?.name, data?.email, data?.password, data?.todo);
   }
 
-  async update(entity: User): Promise<void> {
+  async update(entity: Partial<User>): Promise<void> {
     const user = await this.databaseClient.getCollection("user");
     const { _id, ...data } = entity;
 
