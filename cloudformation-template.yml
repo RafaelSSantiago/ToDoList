@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Template to create an EC2 instace for hosting the ToDoList
+
+Parameters:
+  KeyName: Name of an existing EC2 keypair to enable SSH access to the instace
+  Type: AWS::EC2::Instance::keyName
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: !ref KeyName
+      ImageId: ami-0c55b159cbfafe1f0
+      SecurityGroups:
+       - !ref InstanceSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y nodejs npm git
+          curl -sL https://rpm.nodesource.com/setup_14.x | bash -
+          yum install -y nodejs
+          # Install MongoDB
+          cat > /etc/yum.repos.d/mongodb-org-4.4.repo <<EOF
+          [mongodb-org-4.4]
+          name=MongoDB Repository
+          baseurl=https://repo.mongodb.org/yum/amazon/2/mongodb-org/4.4/x86_64/
+          gpgcheck=1
+          enabled=1
+          gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
+          EOF
+          yum install -y mongodb-org
+          systemctl start mongod
+          systemctl enable mongod
+          # Clone and set up the application
+          git clone https://github.com/RafaelSSantiago/ToDoList.git /home/ec2-user/todolist
+          cd /home/ec2-user/todolist
+          npm install
+          npm run build
+          npm start
+  
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH and HTTP access
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+  
+  Outputs:
+    InstanceId:
+      Description: The Instance ID
+      value: !ref EC2Instance
+    PublicIP:
+      Description: The Public IP address of the EC2 Instance
+      Value: !GetAtt EC2Instance.PublicIp
+
+        
