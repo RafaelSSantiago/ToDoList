@@ -1,0 +1,23 @@
+services:
+  todolistapp:
+    build: .
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      - MONGO_URL=mongodb://admin:secret@mongodb:27017/todo?authSource=admin
+    ports:
+      - "3000:3000"
+
+  mongodb:
+    image: mongo:latest
+    environment:
+     - MONGO_INITDB_ROOT_USERNAME=admin
+     - MONGO_INITDB_ROOT_PASSWORD=secret
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
